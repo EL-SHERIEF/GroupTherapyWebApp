@@ -1,0 +1,16 @@
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(394,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; title: string; slug: string; featured?: boolean | null | undefined; coverUrl?: string | null | undefined; spotifyUrl?: string | null | undefined; published?: boolean | ... 1 more ... | undefined; description?: string | ... 1 more ... | undef...' is not assignable to type '{ id: string; title: string; slug: string; featured: boolean | null; createdAt: Date | null; coverUrl: string | null; spotifyUrl: string | null; published: boolean | null; description: string | null; spotifyPlaylistId: string | null; trackCount: number | null; }'.
+  Types of property 'featured' are incompatible.
+    Type 'boolean | null | undefined' is not assignable to type 'boolean | null'.
+      Type 'undefined' is not assignable to type 'boolean | null'.
+server/storage.ts(422,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; title: string; slug: string; featured?: boolean | null | undefined; artistId?: string | null | undefined; artistName?: string | null | undefined; ... 7 more ...; duration?: string | ... 1 more ... | undefined; }' is not assignable to type '{ id: string; title: string; slug: string; featured: boolean | null; createdAt: Date | null; artistId: string | null; artistName: string | null; published: boolean | null; description: string | null; ... 5 more ...; duration: string | null; }'.
+  Types of property 'featured' are incompatible.
+    Type 'boolean | null | undefined' is not assignable to type 'boolean | null'.
+      Type 'undefined' is not assignable to type 'boolean | null'.
+Build Completed in /vercel/output [36s]
+Deploying outputs...
+Warning: Provided `memory` setting in `vercel.json` is ignored on Active CPU billing. You can safely remove this setting from your configuration. Learn more: https://vercel.com/docs/fluid-compute/pricing
+Deployment completed
+Creating build cache...
+Created build cache: 19.562s
+Uploading build cache [104.23 MB]
