@@ -1,4 +1,3 @@
-
 import { sql } from "drizzle-orm";
 import { type User, type InsertUser, type AdminUser, type InsertAdminUser, type InsertLoginAttempt, type LoginAttempt, type Release, type InsertRelease, type Event, type InsertEvent, type Post, type InsertPost, type Contact, type InsertContact, type Artist, type InsertArtist, type RadioShow, type InsertRadioShow, type Playlist, type InsertPlaylist, type Video, type InsertVideo } from "@shared/schema";
 import { randomUUID } from "crypto";
@@ -10,65 +9,65 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
+
   // Admin user methods
   getAdminUserByUsername(username: string): Promise<AdminUser | undefined>;
   createAdminUser(user: InsertAdminUser): Promise<AdminUser>;
   updateAdminLastLogin(username: string): Promise<void>;
-  
+
   // Login attempt tracking
   recordLoginAttempt(attempt: InsertLoginAttempt): Promise<LoginAttempt>;
   getRecentLoginAttempts(username: string, minutes: number): Promise<LoginAttempt[]>;
-  
+
   // Releases
   getAllReleases(): Promise<Release[]>;
   getReleaseById(id: string): Promise<Release | undefined>;
   createRelease(release: InsertRelease): Promise<Release>;
   updateRelease(id: string, release: Partial<Release>): Promise<Release>;
   deleteRelease(id: string): Promise<void>;
-  
+
   // Events
   getAllEvents(): Promise<Event[]>;
   getEventById(id: string): Promise<Event | undefined>;
   createEvent(event: InsertEvent): Promise<Event>;
   updateEvent(id: string, event: Partial<Event>): Promise<Event>;
   deleteEvent(id: string): Promise<void>;
-  
+
   // Posts
   getAllPosts(): Promise<Post[]>;
   getPostById(id: string): Promise<Post | undefined>;
   createPost(post: InsertPost): Promise<Post>;
   updatePost(id: string, post: Partial<Post>): Promise<Post>;
   deletePost(id: string): Promise<void>;
-  
+
   // Contacts
   getAllContacts(): Promise<Contact[]>;
   getContactById(id: string): Promise<Contact | undefined>;
   createContact(contact: InsertContact): Promise<Contact>;
   updateContact(id: string, contact: Partial<Contact>): Promise<Contact>;
   deleteContact(id: string): Promise<void>;
-  
+
   // Artists
   getAllArtists(): Promise<Artist[]>;
   getArtistById(id: string): Promise<Artist | undefined>;
   createArtist(artist: InsertArtist): Promise<Artist>;
   updateArtist(id: string, artist: Partial<Artist>): Promise<Artist>;
   deleteArtist(id: string): Promise<void>;
-  
+
   // Radio Shows
   getAllRadioShows(): Promise<RadioShow[]>;
   getRadioShowById(id: string): Promise<RadioShow | undefined>;
   createRadioShow(show: InsertRadioShow): Promise<RadioShow>;
   updateRadioShow(id: string, show: Partial<RadioShow>): Promise<RadioShow>;
   deleteRadioShow(id: string): Promise<void>;
-  
+
   // Playlists
   getAllPlaylists(): Promise<Playlist[]>;
   getPlaylistById(id: string): Promise<Playlist | undefined>;
   createPlaylist(playlist: InsertPlaylist): Promise<Playlist>;
   updatePlaylist(id: string, playlist: Partial<Playlist>): Promise<Playlist>;
   deletePlaylist(id: string): Promise<void>;
-  
+
   // Videos
   getAllVideos(): Promise<Video[]>;
   getVideoById(id: string): Promise<Video | undefined>;
@@ -102,7 +101,7 @@ export class MemStorage implements IStorage {
     this.radioShows = new Map();
     this.playlists = new Map();
     this.videos = new Map();
-    
+
     // Seed initial data
     this.seedData();
   }
@@ -389,11 +388,23 @@ export class MemStorage implements IStorage {
     return this.playlists.get(id);
   }
 
-  async createPlaylist(playlist: InsertPlaylist): Promise<Playlist> {
+  async createPlaylist(data: InsertPlaylist): Promise<Playlist> {
     const id = randomUUID();
-    const newPlaylist: Playlist = { ...playlist, id, createdAt: new Date() };
-    this.playlists.set(id, newPlaylist);
-    return newPlaylist;
+    const playlist: Playlist = {
+      id,
+      createdAt: new Date(),
+      title: data.title,
+      slug: data.slug,
+      featured: data.featured ?? null,
+      coverUrl: data.coverUrl ?? null,
+      spotifyUrl: data.spotifyUrl ?? null,
+      published: data.published ?? null,
+      description: data.description ?? null,
+      spotifyPlaylistId: data.spotifyPlaylistId ?? null,
+      trackCount: data.trackCount ?? null,
+    };
+    this.playlists.set(id, playlist);
+    return playlist;
   }
 
   async updatePlaylist(id: string, update: Partial<Playlist>): Promise<Playlist> {
@@ -417,11 +428,25 @@ export class MemStorage implements IStorage {
     return this.videos.get(id);
   }
 
-  async createVideo(video: InsertVideo): Promise<Video> {
+  async createVideo(data: InsertVideo): Promise<Video> {
     const id = randomUUID();
-    const newVideo: Video = { ...video, id, createdAt: new Date() };
-    this.videos.set(id, newVideo);
-    return newVideo;
+    const video: Video = {
+      id,
+      createdAt: new Date(),
+      title: data.title,
+      slug: data.slug,
+      featured: data.featured ?? null,
+      artistId: data.artistId ?? null,
+      artistName: data.artistName ?? null,
+      published: data.published ?? null,
+      description: data.description ?? null,
+      thumbnailUrl: data.thumbnailUrl ?? null,
+      videoUrl: data.videoUrl ?? null,
+      youtubeId: data.youtubeId ?? null,
+      duration: data.duration ?? null,
+    };
+    this.videos.set(id, video);
+    return video;
   }
 
   async updateVideo(id: string, update: Partial<Video>): Promise<Video> {
