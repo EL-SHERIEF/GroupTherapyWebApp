@@ -1,0 +1,17 @@
+server/storage.ts(309,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; status: string; createdAt: Date; name: string; message: string; email: string; category?: string | null | undefined; subject?: string | null | undefined; attachmentUrl?: string | ... 1 more ... | undefined; }' is not assignable to type '{ id: string; name: string; createdAt: Date | null; message: string; status: string | null; category: string | null; email: string; subject: string | null; attachmentUrl: string | null; }'.
+  Types of property 'category' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(337,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; name: string; slug: string; bio?: string | null | undefined; imageUrl?: string | null | undefined; spotifyArtistId?: string | null | undefined; socialLinks?: { ...; } | ... 1 more ... | undefined; featured?: boolean | ... 1 more ... | undefi...' is not assignable to type '{ id: string; name: string; slug: string; bio: string | null; imageUrl: string | null; spotifyArtistId: string | null; socialLinks: { instagram?: string | undefined; twitter?: string | undefined; spotify?: string | undefined; soundcloud?: string | undefined; youtube?: string | undefined; } | null; featured: boolean ...'.
+  Types of property 'bio' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(365,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; title: string; slug: string; hostName: string; coverUrl?: string | null | undefined; published?: boolean | null | undefined; ... 9 more ...; isLive?: boolean | ... 1 more ... | undefined; }' is not assignable to type '{ id: string; title: string; slug: string; createdAt: Date | null; coverUrl: string | null; published: boolean | null; description: string | null; hostName: string; hostBio: string | null; ... 7 more ...; isLive: boolean | null; }'.
+  Types of property 'coverUrl' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+Build Completed in /vercel/output [27s]
+Deploying outputs...
+Warning: Provided `memory` setting in `vercel.json` is ignored on Active CPU billing. You can safely remove this setting from your configuration. Learn more: https://vercel.com/docs/fluid-compute/pricing
+Deployment completed
+Creating build cache...
