@@ -19,7 +19,7 @@
       "destination": "/api/index"
     },
     {
-      "source": "/((?!api|_next|static|favicon.png|manifest.json|robots.txt).*)",
+      "source": "/((?!api|_next|static|assets|favicon.png|manifest.json|robots.txt|sitemap.xml).*)",
       "destination": "/index.html"
     }
   ],
@@ -28,6 +28,13 @@
       "source": "/api/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
     },
     {

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { createApp, initializeApp } from "../server/app";
+import { createApp, initializeAppForServerless } from "../server/app";
 
 let app: ReturnType<typeof createApp> | null = null;
 let initialized = false;
@@ -9,7 +9,7 @@ async function getApp() {
     app = createApp();
   }
   if (!initialized) {
-    await initializeApp(app);
+    await initializeAppForServerless(app);
     initialized = true;
   }
   return app;
@@ -17,5 +17,13 @@ async function getApp() {
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const expressApp = await getApp();
-  return expressApp(req as any, res as any);
+  return new Promise<void>((resolve, reject) => {
+    expressApp(req as any, res as any, (err?: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 }

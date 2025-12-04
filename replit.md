@@ -100,12 +100,36 @@ Preferred communication style: Simple, everyday language.
 3. Select dependencies bundled to reduce file I/O on startup
 
 **Environment Variables**: 
-- `DATABASE_URL`: PostgreSQL connection string (required)
+- `DATABASE_URL`: PostgreSQL connection string (required for production)
 - `NODE_ENV`: development/production mode switching
+- `SESSION_SECRET`: Secret key for session management
+- See `.env.example` for complete list
 
 **Development**: `npm run dev` starts Express with Vite middleware for HMR
 
 **Production**: `npm run build` then `npm start` serves compiled static assets
+
+### Vercel Deployment
+
+The project is configured for Vercel deployment with serverless functions:
+
+**Key Files**:
+- `api/index.ts`: Vercel serverless function handler
+- `vercel.json`: Build and routing configuration
+- `server/app.ts`: Refactored Express app factory (supports both local and serverless)
+- `DEPLOYMENT.md`: Comprehensive deployment guide
+
+**Architecture on Vercel**:
+- Frontend: Static files served from Vercel CDN (`dist/public/`)
+- API: Serverless function at `/api/*` handles all backend routes
+- Sitemap: Generated dynamically via serverless function
+- Client-side routing: SPA fallback to `index.html`
+
+**To Deploy**:
+1. Push to GitHub
+2. Import project in Vercel Dashboard
+3. Set environment variables (DATABASE_URL, SESSION_SECRET, etc.)
+4. Deploy
 
 ### Design System
 
@@ -153,8 +177,18 @@ Preferred communication style: Simple, everyday language.
 
 ### Development Tools
 
-**Replit Plugins**: Development banner, cartographer, and runtime error overlay for Replit environment
-
 **TypeScript**: Type safety across client, server, and shared code
 
 **Tailwind CSS**: Utility-first CSS with PostCSS processing
+
+**Vercel**: Serverless deployment platform with automatic builds
+
+## Recent Changes
+
+- **2025-12-04**: Migrated project for Vercel deployment
+  - Removed Replit-specific Vite plugins
+  - Created serverless API handler (`api/index.ts`)
+  - Refactored server to support both local dev and serverless modes
+  - Added `vercel.json` with proper rewrites and headers
+  - Created `.env.example` and `DEPLOYMENT.md` documentation
+  - Updated package.json with @vercel/node types

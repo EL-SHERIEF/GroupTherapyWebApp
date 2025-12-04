@@ -36,7 +36,7 @@ export function createApp() {
 
     res.on("finish", () => {
       const duration = Date.now() - start;
-      if (path.startsWith("/api")) {
+      if (path.startsWith("/api") || path === "/sitemap.xml") {
         let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
         if (capturedJsonResponse) {
           logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
@@ -74,4 +74,18 @@ export async function initializeApp(app: express.Express) {
   });
 
   return httpServer;
+}
+
+export async function initializeAppForServerless(app: express.Express) {
+  const dummyServer = createServer(app);
+  await registerRoutes(dummyServer, app);
+
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    res.status(status).json({ message });
+    console.error(err);
+  });
+
+  return app;
 }
