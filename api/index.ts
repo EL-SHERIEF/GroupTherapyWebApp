@@ -5,14 +5,22 @@ let app: ReturnType<typeof createApp> | null = null;
 let initialized = false;
 
 async function getApp() {
-  if (!app) {
-    app = createApp();
+  try {
+    if (!app) {
+      console.log("Creating Express app...");
+      app = createApp();
+    }
+    if (!initialized) {
+      console.log("Initializing app for serverless...");
+      await initializeAppForServerless(app);
+      initialized = true;
+      console.log("App initialized successfully");
+    }
+    return app;
+  } catch (error) {
+    console.error("Failed to initialize app:", error);
+    throw error;
   }
-  if (!initialized) {
-    await initializeAppForServerless(app);
-    initialized = true;
-  }
-  return app;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
