@@ -16,14 +16,31 @@ async function getApp() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const expressApp = await getApp();
-  return new Promise<void>((resolve, reject) => {
-    expressApp(req as any, res as any, (err?: any) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
+  try {
+    const expressApp = await getApp();
+    return new Promise<void>((resolve, reject) => {
+      expressApp(req as any, res as any, (err?: any) => {
+        if (err) {
+          console.error("Express error:", err);
+          if (!res.headersSent) {
+            res.status(500).json({ 
+              message: "Internal server error",
+              error: process.env.NODE_ENV === "production" ? undefined : err.message 
+            });
+          }
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
-  });
+  } catch (error) {
+    console.error("Handler error:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ 
+        message: "Internal server error",
+        error: process.env.NODE_ENV === "production" ? undefined : String(error)
+      });
+    }
+  }
 }
