@@ -2,6 +2,11 @@ import { sql } from "drizzle-orm";
 import { type User, type InsertUser, type AdminUser, type InsertAdminUser, type InsertLoginAttempt, type LoginAttempt, type Release, type InsertRelease, type Event, type InsertEvent, type Post, type InsertPost, type Contact, type InsertContact, type Artist, type InsertArtist, type RadioShow, type InsertRadioShow, type Playlist, type InsertPlaylist, type Video, type InsertVideo } from "@shared/schema";
 import { randomUUID } from "crypto";
 
+// Helper function to convert undefined to null
+function nullify<T>(value: T | undefined | null): T | null {
+  return value === undefined ? null : value;
+}
+
 // modify the interface with any CRUD methods
 // you might need
 
@@ -306,7 +311,17 @@ export class MemStorage implements IStorage {
 
   async createContact(contact: InsertContact): Promise<Contact> {
     const id = randomUUID();
-    const newContact: Contact = { ...contact, id, status: "new", createdAt: new Date() };
+    const newContact: Contact = {
+      id,
+      name: contact.name,
+      email: contact.email,
+      message: contact.message,
+      subject: nullify(contact.subject),
+      category: nullify(contact.category),
+      attachmentUrl: nullify(contact.attachmentUrl),
+      status: "new",
+      createdAt: new Date(),
+    };
     this.contacts.set(id, newContact);
     return newContact;
   }
@@ -334,7 +349,17 @@ export class MemStorage implements IStorage {
 
   async createArtist(artist: InsertArtist): Promise<Artist> {
     const id = randomUUID();
-    const newArtist: Artist = { ...artist, id, createdAt: new Date() };
+    const newArtist: Artist = {
+      id,
+      name: artist.name,
+      slug: artist.slug,
+      bio: nullify(artist.bio),
+      imageUrl: nullify(artist.imageUrl),
+      spotifyArtistId: nullify(artist.spotifyArtistId),
+      socialLinks: nullify(artist.socialLinks),
+      featured: nullify(artist.featured),
+      createdAt: new Date(),
+    };
     this.artists.set(id, newArtist);
     return newArtist;
   }
@@ -362,7 +387,25 @@ export class MemStorage implements IStorage {
 
   async createRadioShow(show: InsertRadioShow): Promise<RadioShow> {
     const id = randomUUID();
-    const newShow: RadioShow = { ...show, id, createdAt: new Date() };
+    const newShow: RadioShow = {
+      id,
+      title: show.title,
+      slug: show.slug,
+      hostName: show.hostName,
+      description: nullify(show.description),
+      hostBio: nullify(show.hostBio),
+      hostImageUrl: nullify(show.hostImageUrl),
+      coverUrl: nullify(show.coverUrl),
+      streamUrl: nullify(show.streamUrl),
+      recordedUrl: nullify(show.recordedUrl),
+      dayOfWeek: nullify(show.dayOfWeek),
+      startTime: nullify(show.startTime),
+      endTime: nullify(show.endTime),
+      timezone: nullify(show.timezone),
+      isLive: nullify(show.isLive),
+      published: nullify(show.published),
+      createdAt: new Date(),
+    };
     this.radioShows.set(id, newShow);
     return newShow;
   }
@@ -392,16 +435,16 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const playlist: Playlist = {
       id,
-      createdAt: new Date(),
       title: data.title,
       slug: data.slug,
-      featured: data.featured === undefined ? null : data.featured,
-      coverUrl: data.coverUrl === undefined ? null : data.coverUrl,
-      spotifyUrl: data.spotifyUrl === undefined ? null : data.spotifyUrl,
-      published: data.published === undefined ? null : data.published,
-      description: data.description === undefined ? null : data.description,
-      spotifyPlaylistId: data.spotifyPlaylistId === undefined ? null : data.spotifyPlaylistId,
-      trackCount: data.trackCount === undefined ? null : data.trackCount,
+      featured: nullify(data.featured),
+      coverUrl: nullify(data.coverUrl),
+      spotifyUrl: nullify(data.spotifyUrl),
+      published: nullify(data.published),
+      description: nullify(data.description),
+      spotifyPlaylistId: nullify(data.spotifyPlaylistId),
+      trackCount: nullify(data.trackCount),
+      createdAt: new Date(),
     };
     this.playlists.set(id, playlist);
     return playlist;
@@ -432,20 +475,20 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const video: Video = {
       id,
-      createdAt: new Date(),
       title: data.title,
       slug: data.slug,
-      featured: data.featured === undefined ? null : data.featured,
-      artistId: data.artistId === undefined ? null : data.artistId,
-      artistName: data.artistName === undefined ? null : data.artistName,
-      published: data.published === undefined ? null : data.published,
-      description: data.description === undefined ? null : data.description,
-      thumbnailUrl: data.thumbnailUrl === undefined ? null : data.thumbnailUrl,
-      videoUrl: data.videoUrl === undefined ? null : data.videoUrl,
-      youtubeId: data.youtubeId === undefined ? null : data.youtubeId,
-      duration: data.duration === undefined ? null : data.duration,
-      category: data.category === undefined ? null : data.category,
-      vimeoId: data.vimeoId === undefined ? null : data.vimeoId,
+      featured: nullify(data.featured),
+      artistId: nullify(data.artistId),
+      artistName: nullify(data.artistName),
+      published: nullify(data.published),
+      description: nullify(data.description),
+      thumbnailUrl: nullify(data.thumbnailUrl),
+      videoUrl: nullify(data.videoUrl),
+      youtubeId: nullify(data.youtubeId),
+      duration: nullify(data.duration),
+      category: nullify(data.category),
+      vimeoId: nullify(data.vimeoId),
+      createdAt: new Date(),
     };
     this.videos.set(id, video);
     return video;
