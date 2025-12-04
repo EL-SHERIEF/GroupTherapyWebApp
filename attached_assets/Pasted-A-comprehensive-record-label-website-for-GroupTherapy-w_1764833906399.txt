@@ -1,0 +1,191 @@
+A comprehensive record label website for GroupTherapy with integrated admin dashboard, featuring media channels, news pages, and streaming radio functionality built with Next.js and Supabase backend.
+
+Project Overview:
+Build a professional, production-ready record label website for GroupTherapy that combines a high-performance Next.js frontend with a Supabase backend and media delivery pipeline. The site must serve fans, press, promoters, and the label team. Key goals: fast load, great mobile UX, rich multimedia presentation (audio + video), reliable live or scheduled radio streaming, and a secure admin dashboard for non-technical content managers to update releases, schedule radio shows, post news, accept demos, and run tours/campaigns.
+
+Core Features:
+
+Home page with new releases slider (20+ slides), Spotify integration, events slider, playlists, and embedded radio player
+
+20+ carousel with lazy-loading covers, automatic & manual advance, keyboard accessibility
+
+Spotify “Listen now” deep-links + track/album preview cards using Spotify Web API / SDK
+
+Events highlights carousel (filter upcoming/past, quick RSVP or “add to calendar”)
+
+Curated playlists section (play inline 30s previews or full stream redirect)
+
+Sticky/global embedded radio player: play/pause, volume, scrub, repeat, crossfade, metadata (artist/track/cover), mini-player on mobile
+
+Featured artist / spotlight strip (eg “Osama Releases”) with hero CTA and social links
+
+Dedicated radio page with full streaming functionality and show scheduling
+
+Live stream support (Shoutcast/Icecast/HTTPS stream) and fallback static playlists
+
+Show schedule grid (day/time, host, description, guest artists) with timezone support and “Set reminder” CTA
+
+Now-playing metadata display + history (recent tracks list) persisted in DB
+
+DJ host pages (bio, past shows, clips) and on-demand show archive (podcast-style episodes)
+
+Live chat or comment feed (optional, Phase 2) and listener count badge
+
+Admin dashboard for content management (releases, events, blogs, news) with authentication
+
+Role-based access (admin, editor, contributor) via Supabase Auth + policies
+
+Releases CMS: add metadata, tag genres, set release windows, attach audio-preview, streaming links (Spotify/Apple), campaign flags (feature on homepage for X days)
+
+Events CMS: venue fields, ticket links, geo data, map embed, capacity, RSVPs, export CSV
+
+Blog/News (GroupTherapy Radar): WYSIWYG editor, scheduled publishing, categories, SEO fields (meta, OG image)
+
+Radio CMS: schedule editor, create show blocks, upload recorded shows, manage stream metadata, set fallback playlists
+
+Media manager: bulk uploads, image/video transcoding checklist, automatic thumbnails, direct Supabase storage links
+
+Demo inbox: secure uploads, tagging, shortlisting, commenting, export to CSV & Slack/email notifications
+
+Audit logs, activity feed, and quick “publish/unpublish” toggles
+
+Content pages for tours, videos, about us, contact forms, and press/news section
+
+Tours: list + map view, ticket CTA, localized date formatting, promoter contact form
+
+Videos: grid with lazy-loaded players, YouTube/Vimeo embeds or self-hosted HLS, captions & transcripts support
+
+About: label history, roster, team bios with social links and downloadable EPKs
+
+Contact: multi-target form (press/talent/bookings) with anti-spam, file attachments (EPK), admin inbox + email forwarding
+
+Press / News (Radar): aggregated press feed, curated press kits, logos & download assets, media requests workflow
+
+Visual References:
+Inspired by major record labels like Interscope Records and Def Jam, known for their multimedia-rich interfaces with integrated music players and dynamic content presentation. Also take cues from modern music platforms and editorial sites:
+
+Bold hero imagery and oversized album art (Interscope)
+
+Clean editorial article layout and artist pages (Def Jam / Pitchfork)
+
+Persistent player UX like BBC/Apple Music (mini-player + full player)
+
+Slick admin UX inspired by modern headless CMS panels (Strapi/Contentful for layout cues)
+
+Style Guide:
+
+Colors:
+
+Primary: hsl(96, 85.19%, 73.53%) (lime green) — used for CTAs, highlights, radio active state
+
+Secondary: hsl(0, 0%, 0%) (black) — primary accent and typography headings
+
+Background: hsl(0, 0%, 100%) (white) — main page background in light theme
+
+Text: hsl(0, 0%, 0%) (black) — body copy
+
+Cards: hsl(0, 0%, 96.47%) (light grey) — subtle surfaces and panels
+
+Dark Mode:
+
+Background: hsl(0 0% 0%) (black)
+
+Cards: hsl(228 9.8039% 10%) (dark grey)
+
+Text: hsl(200 6.6667% 91.1765%) (light grey)
+
+Primary Accent: hsl(203.7736 87.6033% 52.5490%) (blue) — alternate primary in dark mode for accessibility contrast
+
+Design:
+
+Fonts: Space Grotesk (headline), Geist (body) — fallbacks sans-serif
+
+Grid: 12-column responsive grid, large media breakpoints for hero art
+
+Components: large media cards, horizontal release carousels, sticky player, schedule grid, modular hero blocks
+
+UX: mobile-first, accessible (WCAG AA), keyboard nav, aria labels for player & carousels
+
+Animations: subtle framer-motion fades, slide-in lists, animated play icon states
+
+Images: progressive JPEG or WebP, aspect-ratio enforced thumbnails, object-fit cover
+
+Technology Requirements:
+
+Next.js framework as specified by user
+
+App Router, Server Components for content-heavy pages, ISR/edge caching for high-read pages
+
+TypeScript for type safety
+
+TailwindCSS for rapid, consistent styling
+
+Shadcn UI / custom components for admin and public components
+
+Framer Motion for micro-interactions
+
+Supabase for backend, authentication, admin functionality, and form submissions
+
+PostgreSQL schema to store releases, artists, playlists, events, radio shows, blog posts, demos, press articles, users, permissions
+
+Supabase Storage for media (images, mp3, video, EPKs) with CDN links
+
+Supabase Realtime for now-playing updates, minor live features, and notifications
+
+Edge functions (optional) for heavy processing tasks (audio transcoding triggers, webhooks)
+
+Spotify API integration for music streaming
+
+Use Spotify Web API to fetch metadata, artist links and to create “Listen on Spotify” flows and embeddable players
+
+Optional: OAuth to allow artists/admins to link Spotify profiles for richer data
+
+Radio streaming functionality with Supabase backend
+
+Stream sources: Shoutcast/Icecast or third-party streaming provider; Next.js player connects to stream URL and shows metadata parsed from the stream or from a Supabase-managed schedule feed
+
+HLS support for modern browsers and mobile reliability; fallback to mp3 stream when necessary
+
+Radio metadata ingestion: either parse ICY metadata from stream or push metadata to a Supabase table via a small ingestion worker / edge function
+
+On-demand archived shows stored in Supabase or an object store and served via HLS or progressive downloads
+
+(Additional recommended technology & integrations — included because you asked for a very full website)
+
+Media Processing:
+
+Use an external worker (serverless function or small Cloud Run job) or Supabase Edge Function to trigger transcoding (audio normalization, HLS packaging, thumbnail generation) when media uploaded to storage
+
+Search & Discovery:
+
+Algolia or Supabase full-text search for releases, blogs, artists, events (fast search experience)
+
+Analytics & Monitoring:
+
+Vercel analytics or Plausible for privacy-friendly analytics; Sentry for error monitoring
+
+CI/CD & Deployment:
+
+Vercel for Next.js deployment (edge functions + CDN), Supabase Cloud for DB/storage
+
+GitHub Actions for tests, linting, and migrations
+
+Payments / Tickets:
+
+Stripe integration for direct ticket sales or donations; Ticketing links to external vendors (Eventbrite) supported
+
+Email & Notifications:
+
+Transactional emails via Postmark/SendGrid for contact/demo confirmations; optional push notifications/one-signal for show reminders
+
+SEO, Social & Metadata:
+
+Next.js Metadata API, Open Graph / Twitter Card generation, sitemap.xml and robots.txt generation, structured data (schema.org) for releases & events
+
+Security & Compliance:
+
+Rate limiting on API endpoints, RLS policies in Supabase, file size/type validation, CSRF protections, HTTPS only, secure cookies, SOC/PCI considerations if taking payments
+
+Testing:
+
+Playwright / Cypress for E2E, Jest + React Testing Library for unit tests, Lighthouse checks for performance & accessibility
